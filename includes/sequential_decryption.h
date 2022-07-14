@@ -14,28 +14,20 @@
 
 using namespace std;
 
-double sequentialDecryption(const char *crypted_password, const char *salt, const vector<string>& bow){
+string sequentialDecryption(const char *encrypted_password, const char *salt, const vector<string>& bow){
     //cout<< "SequentialDecryption started!\nBrute force hacking started!" << endl;
     auto *structure = new crypt_data;
     structure->initialized = 0;
-    auto start = std::chrono::system_clock::now();
+
     for(const auto& word : bow){
-        if(strcmp(crypt_r(word.c_str(), salt, structure), crypted_password) == 0){
-            auto end = std::chrono::system_clock::now();
-            std::chrono::duration<double> diff = end - start;
+        if(strcmp(crypt_r(word.c_str(), salt, structure), encrypted_password) == 0){
             //cout<< "Password (" << word << ") found in: " << diff.count() << " seconds!" <<endl;
-            //return word;
-            return diff.count();
+            return word;
         }
     }
-
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> diff = end - start;
-
     //cout << "Password Not Found!" << endl;
     //cout << "Time elapsed: " << diff.count() << "seconds" << endl;
-    //return "Password Not Found!";
-    return diff.count();
+    return "Password Not Found!";
 }
 
 
@@ -43,13 +35,14 @@ double testSequential(const string& password, const string& salt, vector<string>
 
     auto *structure = new crypt_data;
     structure->initialized = 0;
-    const char *crypted_password = crypt_r(password.c_str(), salt.c_str(), structure);
+    const char *encrypted_password = crypt_r(password.c_str(), salt.c_str(), structure);
 
     //Create the password positions in BOW in random location
     vector<int> pass_positions;
     for(int i=0; i<executions-2; i++)
         pass_positions.push_back(int(bow.size()/executions)*i);
     pass_positions.push_back(int(bow.size()));
+    std::chrono::duration<double> diff{};
 
     double min_exec_time= 10000 , max_exec_time = 0, mean_exec_time = 0, exec_time;
 
@@ -58,7 +51,10 @@ double testSequential(const string& password, const string& salt, vector<string>
         if(execution != executions-1)
             bow.insert(bow.begin() + pass_positions[execution], password);
 
-        exec_time = sequentialDecryption(crypted_password, salt.c_str(), bow);
+        auto start = std::chrono::system_clock::now();
+        sequentialDecryption(encrypted_password, salt.c_str(), bow);
+        diff = std::chrono::system_clock::now() - start;
+        exec_time = diff.count();
         mean_exec_time += exec_time;
 
         //Check min

@@ -1,0 +1,4 @@
+/snap/clion/198/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/198/bin/ninja/linux/ninja -DCMAKE_C_COMPILER=/bin/gcc -DCMAKE_CXX_COMPILER=/bin/g++ -G Ninja -S /home/nicco/CLionProjects/PasswordDecryption -B /home/nicco/CLionProjects/PasswordDecryption/cmake-build-debug
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/nicco/CLionProjects/PasswordDecryption/cmake-build-debug
