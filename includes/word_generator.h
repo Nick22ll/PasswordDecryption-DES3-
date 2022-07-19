@@ -1,12 +1,7 @@
-//
-// Created by Nicco on 21/06/2022.
-//
 
 #ifndef DES_SEQUENTIAL_2_WORD_GENERATOR_H
 #define DES_SEQUENTIAL_2_WORD_GENERATOR_H
 
-// C++ program to print all
-// possible strings of length k
 #include <bits/stdc++.h>
 #include <string>
 #include <iostream>

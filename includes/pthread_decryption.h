@@ -1,6 +1,3 @@
-//
-// Created by nicco on 04/07/22.
-//
 
 #ifndef PASSWORDDECRYPTION_PTHREAD_DECRYPTION_H
 #define PASSWORDDECRYPTION_PTHREAD_DECRYPTION_H
@@ -25,7 +22,6 @@ struct partialDecrypt_arguments{
     vector<string>* bow;
     int start_bow_idx;
     int stop_bow_idx;
-    vector<pthread_t>* threads;
     bool *found;
 };
 
@@ -92,7 +88,6 @@ vector<double> testPThread(const string& password, string& salt, vector<string> 
                 arguments[i].encrypted_password = encrypted_password;
                 arguments[i].salt = salt;
                 arguments[i].bow = &bow;
-                arguments[i].threads = &threads;
                 arguments[i].start_bow_idx = i*chunk_length;
                 arguments[i].stop_bow_idx = (i*chunk_length) + chunk_length;
                 arguments[i].found = &found;
@@ -102,14 +97,12 @@ vector<double> testPThread(const string& password, string& salt, vector<string> 
             arguments[thread_num-1].encrypted_password = encrypted_password;
             arguments[thread_num-1].salt = salt;
             arguments[thread_num-1].bow = &bow;
-            arguments[thread_num-1].threads = &threads;
             arguments[thread_num-1].start_bow_idx = chunk_length * (thread_num - 1);
             arguments[thread_num-1].stop_bow_idx = bow.size();
             arguments[thread_num-1].found = &found;
             if(pthread_create(&threads[thread_num-1], NULL, partialDecrypt, (void*)&arguments[thread_num-1]) != 0){
                 cout<< "Error" << endl;
             }
-
 
             for(auto thread:threads)
                 pthread_join(thread, NULL);
@@ -144,8 +137,5 @@ vector<double> testPThread(const string& password, string& salt, vector<string> 
 
     return mean_values;
 }
-
-
-
 
 #endif //PASSWORDDECRYPTION_PTHREAD_DECRYPTION_H

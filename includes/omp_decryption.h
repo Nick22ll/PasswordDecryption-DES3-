@@ -1,6 +1,3 @@
-//
-// Created by nicco on 04/07/22.
-//
 
 #ifndef PASSWORDDECRYPTION_OMP_DECRYPTION_H
 #define PASSWORDDECRYPTION_OMP_DECRYPTION_H
